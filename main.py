@@ -5,14 +5,17 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtCore import Qt
+from PyQt5.uic.properties import QtCore, QtWidgets
+
+from circle import Ui_MainWindow
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('circle.ui', self)
+        self.setupUi(self)
 
-        self.pushbutton = QPushButton('Создать окружность', self)
+        self.button = QPushButton('Создать окружность', self)
         self.button.clicked.connect(self.create_circle)
 
         self.circles = []
@@ -22,7 +25,8 @@ class MainWindow(QMainWindow):
         painter.setRenderHint(QPainter.Antialiasing)
 
         for circle in self.circles:
-            painter.setBrush(Qt.yellow)
+            color = QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            painter.setBrush(color)
             painter.setPen(Qt.NoPen)
             painter.drawEllipse(circle['x'], circle['y'], circle['diameter'], circle['diameter'])
 
